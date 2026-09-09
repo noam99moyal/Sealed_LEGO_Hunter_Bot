@@ -38,36 +38,44 @@ On first open the bot asks (one topic at a time):
 After you confirm, the bot writes landed-price formulas for *your* ship-to and creates scan routines **on itself** — no second bot to spin up.
 
 ### 2. What each scan does
-- Reads your watchlist (`Number`, `Name`, `Watch`; optional priority columns).
+- Reads your watchlist (`Number`, `Name`, `Watch`; optional priority + Best deal columns).
 - On classifieds / P2P / auction sites: searches **three ways** per set — **number-only**, **name-only**, and **combined** (plus local-language name when known) — then merges unique listings. Never only one of number or name. Retail catalogs may use set number alone.
 - Matches listings to watchlist rows carefully (set number preferred; reject polybags/lots/wrong numbers/vague theme-only ads).
 - Scores **landed price** = item + buyer fees + shipping to your ship-to (per-marketplace; not copied from another country).
 - Compares to the right benchmark and acts by band:
-  - Below ignore → quiet
-  - Negotiate band → chat notify with math
-  - Buy band → chat notify to purchase (**you** decide; never auto-buy)
-- **Sealed-only**: factory-sealed / MISB; neutralize “never used” style phrases before open/used checks so NEW ads are not false-skipped; uncertain listings are skipped.
+  - Below ignore → quiet on that listing
+  - Negotiate / buy bands → included in the chat digest (re-reported each scan if still qualifying)
+- **Sealed-only**: factory-sealed / MISB; neutralize “never used” style phrases before open/used checks; uncertain listings skipped.
+- Updates Drive `Best deal` / `Best link` each scan when a sheet is connected.
 
-### 3. Failure reporting
-If a required step fails — anti-bot / captcha / splash wall, HTTP 403/5xx, site down, login needed, sheet unreadable, missing benchmarks — the bot **pings you that run** with what failed and what you can do.
+### 3. Chat digest & alerts
+Qualifying hits use a fixed digest layout (Buy / Negotiate sections, % off + landed vs bench, listing links, 🆕🔁⬆️📉 tags). Failures sit **above** the digest. Full spec: [docs/deal-digest-and-watchlist.md](docs/deal-digest-and-watchlist.md).
 
-Also fail-loud: if a site returns many ads but almost none pass the sealed filter (`sealed_pass ≈ 0`), that run **pings you** — it does not pretend the market is empty.
+### 4. Failure reporting
+If a required step fails — anti-bot / captcha / splash wall, HTTP 403/5xx, site down, login needed, sheet unreadable, missing benchmarks — the bot **pings you that run**.
 
-Quiet only when every required site completed cleanly and there was nothing new.
+Also fail-loud: if a site returns many ads but almost none pass the sealed filter (`sealed_pass ≈ 0`), that run **pings you**.
 
-See [docs/sealed-filter-hygiene.md](docs/sealed-filter-hygiene.md) for the full rules and regression checklist.
+Quiet only when every required site completed cleanly and there was nothing new to report (no qualifying deals and no failures).
+
+See [docs/sealed-filter-hygiene.md](docs/sealed-filter-hygiene.md) for sealed-filter rules and regression checklist.
 
 ---
 
-## Watchlist shape (minimum)
+## Watchlist shape (Drive default)
 
 | Column | Purpose |
 |--------|---------|
 | `Number` | Set number |
 | `Name` | English set name |
+| `Year` | Optional (user context) |
 | `Watch` | `YES` / `NO` |
-| *(optional)* local name | For local-language search |
-| *(optional)* per-site priority | `YES` / `NO` for rate-limited marketplaces |
+| Market priority (e.g. `eBay`) | `YES` / `NO` for rate-limited sites |
+| `Benchmark` | Reference price for % off |
+| `Best deal` | Cheapest sealed landed meeting threshold (blank if none) |
+| `Best link` | URL for that listing only |
+
+Do **not** add Best % off, Best site, Pricing updated, or official shop URL by default.
 
 Connect **Google Drive** in Grok Bot for the preferred Sheet workflow, or paste a CSV if you prefer.
 
@@ -93,6 +101,7 @@ The public template does **not** ship anyone else’s sheet IDs, logins, or regi
 ## Links
 
 - **Install bot:** https://x.ai/bot/OBVjf4fwaUTIZT3th9QKp
+- **Digest & watchlist UX:** [docs/deal-digest-and-watchlist.md](docs/deal-digest-and-watchlist.md)
 - **Sealed-filter hygiene:** [docs/sealed-filter-hygiene.md](docs/sealed-filter-hygiene.md)
 - **Benchmarks:** [LEGO.com](https://www.lego.com) (your local RRP) · [BrickEconomy](https://www.brickeconomy.com) (retired / market reference)
 - **This repo:** https://github.com/noam99moyal-sudo/lego-deal-template
