@@ -1,4 +1,4 @@
-# LEGO Deal Template
+# Sealed LEGO Hunter
 
 A **Grok Bot** that hunts **factory-sealed LEGO** deals for *your* country.
 
@@ -10,7 +10,7 @@ You configure it once (ship-to, marketplaces, cadence, discount bands, watchlist
 
 Add the bot from this public template link:
 
-**➡️ [Add LEGO Deal Template](https://x.ai/bot/OBVjf4fwaUTIZT3th9QKp)**
+**➡️ [Add Sealed LEGO Hunter](https://x.ai/bot/OBVjf4fwaUTIZT3th9QKp)**
 
 1. Open the link while signed into [x.ai](https://x.ai) / Grok Bot.
 2. Add the template to your assistants.
@@ -87,6 +87,7 @@ The public template does **not** ship anyone else’s sheet IDs, logins, or regi
 
 - **Install bot:** https://x.ai/bot/OBVjf4fwaUTIZT3th9QKp
 - **Benchmarks:** [LEGO.com](https://www.lego.com) (your local RRP) · [BrickEconomy](https://www.brickeconomy.com) (retired / market reference)
+- **This repo:** https://github.com/noam99moyal-sudo/lego-deal-template
 
 ---
 
