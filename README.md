@@ -40,15 +40,22 @@ After you confirm, the bot writes landed-price formulas for *your* ship-to and c
 ### 2. What each scan does
 - Reads your watchlist (`Number`, `Name`, `Watch`; optional priority columns).
 - On classifieds / P2P / auction sites: searches **three ways** per set — **number-only**, **name-only**, and **combined** (plus local-language name when known) — then merges unique listings. Never only one of number or name. Retail catalogs may use set number alone.
+- Matches listings to watchlist rows carefully (set number preferred; reject polybags/lots/wrong numbers/vague theme-only ads).
 - Scores **landed price** = item + buyer fees + shipping to your ship-to (per-marketplace; not copied from another country).
 - Compares to the right benchmark and acts by band:
   - Below ignore → quiet
   - Negotiate band → chat notify with math
   - Buy band → chat notify to purchase (**you** decide; never auto-buy)
-- **Sealed-only**: factory-sealed / MISB; uncertain listings are skipped.
+- **Sealed-only**: factory-sealed / MISB; neutralize “never used” style phrases before open/used checks so NEW ads are not false-skipped; uncertain listings are skipped.
 
 ### 3. Failure reporting
-If a required step fails — anti-bot / captcha / splash wall, HTTP 403/5xx, site down, login needed, sheet unreadable, missing benchmarks — the bot **pings you that run** with what failed and what you can do. It does **not** stay quiet about failures. Quiet only when every required site completed cleanly and there was nothing new.
+If a required step fails — anti-bot / captcha / splash wall, HTTP 403/5xx, site down, login needed, sheet unreadable, missing benchmarks — the bot **pings you that run** with what failed and what you can do.
+
+Also fail-loud: if a site returns many ads but almost none pass the sealed filter (`sealed_pass ≈ 0`), that run **pings you** — it does not pretend the market is empty.
+
+Quiet only when every required site completed cleanly and there was nothing new.
+
+See [docs/sealed-filter-hygiene.md](docs/sealed-filter-hygiene.md) for the full rules and regression checklist.
 
 ---
 
@@ -73,7 +80,7 @@ Connect **Google Drive** in Grok Bot for the preferred Sheet workflow, or paste 
 | A configurable sealed-LEGO deal **hunter** | An auto-buyer |
 | Notify-only in chat | Seller DM automation |
 | Geography-agnostic until **you** configure it | Locked to one country’s marketplaces |
-| Failure-aware (bot walls, sheet errors, etc.) | Silent when a required search dies |
+| Failure-aware (bot walls, sheet errors, zero-pass health checks) | Silent when a required search or filter dies |
 
 ---
 
@@ -86,6 +93,7 @@ The public template does **not** ship anyone else’s sheet IDs, logins, or regi
 ## Links
 
 - **Install bot:** https://x.ai/bot/OBVjf4fwaUTIZT3th9QKp
+- **Sealed-filter hygiene:** [docs/sealed-filter-hygiene.md](docs/sealed-filter-hygiene.md)
 - **Benchmarks:** [LEGO.com](https://www.lego.com) (your local RRP) · [BrickEconomy](https://www.brickeconomy.com) (retired / market reference)
 - **This repo:** https://github.com/noam99moyal-sudo/lego-deal-template
 
