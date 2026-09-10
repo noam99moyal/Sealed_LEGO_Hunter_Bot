@@ -33,7 +33,7 @@ On first open the bot asks (one topic at a time):
 | **Discount bands** | Ignore below X% · negotiate-notify X→under Y% · buy-notify at Y%+ (all vs **landed** price) |
 | **Watchlist** | Google Drive sheet (preferred) or paste/CSV in chat |
 | **Benchmarks** | Official **LEGO.com** RRP for your country (current sets) · **BrickEconomy** new/sealed for retired (US skew noted) |
-| **Defaults** | Sealed-only **on** · failure pings **on** |
+| **Defaults** | Sealed-only **on** · **universal fail-loud** **on** |
 
 After you confirm, the bot writes landed-price formulas for *your* ship-to and creates scan routines **on itself** — no second bot to spin up.
 
@@ -51,14 +51,16 @@ After you confirm, the bot writes landed-price formulas for *your* ship-to and c
 ### 3. Chat digest & alerts
 Qualifying hits use a fixed digest layout (Buy / Negotiate sections, % off + landed vs bench, listing links, 🆕🔁⬆️📉 tags). Failures sit **above** the digest. Full spec: [docs/deal-digest-and-watchlist.md](docs/deal-digest-and-watchlist.md).
 
-### 4. Failure reporting
-If a required step fails — anti-bot / captcha / splash wall, HTTP 403/5xx, site down, login needed, sheet unreadable, missing benchmarks — the bot **pings you that run**.
+### 4. Universal fail-loud
+If **any** configured marketplace or comparator fails to fetch, parse, login, or return usable data → **ping that same run** (what failed + what you can do). Never treat a broken site as an empty market.
 
-Also fail-loud: if a site returns many ads but almost none pass the sealed filter (`sealed_pass ≈ 0`), that run **pings you**.
+- **Soft** failure (documented fallback still covered offers) → list above the digest
+- **Hard** failure (no usable fallback) → always ping
+- Also ping when many ads pass search but almost none pass sealed (`sealed_pass ≈ 0`)
 
-Quiet only when every required site completed cleanly and there was nothing new to report (no qualifying deals and no failures).
+**Quiet only** when every required site **succeeded** and there are genuinely no qualifying sealed hits.
 
-See [docs/sealed-filter-hygiene.md](docs/sealed-filter-hygiene.md) for sealed-filter rules and regression checklist.
+Full lock: [docs/fail-loud.md](docs/fail-loud.md). Sealed-filter rules: [docs/sealed-filter-hygiene.md](docs/sealed-filter-hygiene.md).
 
 ---
 
@@ -88,7 +90,7 @@ Connect **Google Drive** in Grok Bot for the preferred Sheet workflow, or paste 
 | A configurable sealed-LEGO deal **hunter** | An auto-buyer |
 | Notify-only in chat | Seller DM automation |
 | Geography-agnostic until **you** configure it | Locked to one country’s marketplaces |
-| Failure-aware (bot walls, sheet errors, zero-pass health checks) | Silent when a required search or filter dies |
+| Fail-loud on every marketplace (including future ones) | Silent when a required search or filter dies |
 
 ---
 
@@ -101,6 +103,7 @@ The public template does **not** ship anyone else’s sheet IDs, logins, or regi
 ## Links
 
 - **Install bot:** https://x.ai/bot/OBVjf4fwaUTIZT3th9QKp
+- **Universal fail-loud:** [docs/fail-loud.md](docs/fail-loud.md)
 - **Digest & watchlist UX:** [docs/deal-digest-and-watchlist.md](docs/deal-digest-and-watchlist.md)
 - **Sealed-filter hygiene:** [docs/sealed-filter-hygiene.md](docs/sealed-filter-hygiene.md)
 - **Benchmarks:** [LEGO.com](https://www.lego.com) (your local RRP) · [BrickEconomy](https://www.brickeconomy.com) (retired / market reference)

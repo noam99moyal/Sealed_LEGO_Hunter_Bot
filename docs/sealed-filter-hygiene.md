@@ -34,7 +34,7 @@ Reject:
 
 If a marketplace returns **many** candidate ads but `sealed_pass ≈ 0` for that site/run → **ping the user that run**. Never stay quiet as if the market is empty. Treat it as a likely filter bug or site change.
 
-This sits alongside existing failure pings (bot walls, 403s, sheet/login/benchmark failures).
+**Universal fail-loud** (fetch/parse/login failures on any configured site, soft vs hard, quiet rules) lives in [fail-loud.md](fail-loud.md). Both apply to every marketplace, including future ones.
 
 ---
 
@@ -71,9 +71,10 @@ Use these as “must pass / must fail” cases when changing sealed or match log
 | Bare theme/franchise name only | Too vague |
 | Distinctive name tokens **plus** a foreign set number | Prefer reject |
 
-### Health check that must PING
+### Health / fail-loud that must PING
 
 | Case | Why |
 |------|-----|
 | Marketplace: 20+ candidates, `sealed_pass = 0` | Likely filter bug |
-| Site blocked / 403 / captcha | Existing fail-loud |
+| Any required site: fetch/parse/login failure (hard) | Universal fail-loud |
+| Soft failure with documented fallback | List above digest |
