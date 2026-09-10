@@ -107,7 +107,7 @@ The public template does **not** ship anyone else’s sheet IDs, logins, or regi
 - **Digest & watchlist UX:** [docs/deal-digest-and-watchlist.md](docs/deal-digest-and-watchlist.md)
 - **Sealed-filter hygiene:** [docs/sealed-filter-hygiene.md](docs/sealed-filter-hygiene.md)
 - **Benchmarks:** [LEGO.com](https://www.lego.com) (your local RRP) · [BrickEconomy](https://www.brickeconomy.com) (retired / market reference)
-- **This repo:** https://github.com/noam99moyal-sudo/lego-deal-template
+- **This repo:** https://github.com/noam99moyal/Sealed_LEGO_Hunter_Bot
 
 ---
 
